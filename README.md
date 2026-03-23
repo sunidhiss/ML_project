@@ -1,11 +1,11 @@
 [README.md](https://github.com/user-attachments/files/23306117/README.md)
-# 🦠 Analyzing the Impact of Climate on Epidemic Trends in India
+# Analyzing the Impact of Climate on Epidemic Trends in India
 
 ### Identifying High-Risk Epidemic Zones Using Data-Driven Risk Scoring and Clustering
 
 ---
 
-## 🌍 Introduction
+## Introduction
 
 Epidemic outbreaks in India—especially **vector-borne and waterborne diseases** like dengue, malaria, and chikungunya—show strong correlations with **climatic factors** such as temperature, humidity, and rainfall.  
 
@@ -15,7 +15,7 @@ By leveraging the **EpiClim dataset**, which provides district-wise weekly epide
 
 ---
 
-## 🎯 Objectives
+##  Objectives
 
 - **Data Acquisition & Preprocessing:**  
   Collect, clean, and preprocess district-level epidemic and climate datasets from public sources.
@@ -34,33 +34,72 @@ By leveraging the **EpiClim dataset**, which provides district-wise weekly epide
 
 ---
 
-## ⚙️ Workflow
+##  Workflow
 
 1. **Data Collection & Preprocessing**  
    - Download datasets from **EpiClim**, **IMD**, and **IDSP**.  
    - Handle missing values and normalize climatic variables.  
    - Perform **Exploratory Data Analysis (EDA)** for trend identification.
 
-2. **Risk Score Computation**  
+2. **Exploratory Data Analysis (EDA) & Insights (Added Work)**  
+   - Performed detailed analysis using cleaned dataset  
+   - Observed seasonal outbreak patterns (monsoon peaks)  
+   - Identified dominant diseases (Dengue, Malaria, Chikungunya)  
+   - Analyzed correlation between temperature, rainfall, and cases  
+   - Highlighted high-risk districts based on average cases  
+   - Generated visual outputs saved as `.png` for reporting and presentation
+
+3. **Risk Score Computation**  
    - Develop a weighted formula linking epidemic rates to climatic variables.  
    - Rank and categorize districts as **High**, **Moderate**, or **Low Risk**.
 
-3. **Clustering for Zone Detection**  
+4. **Clustering for Zone Detection**  
    - Apply **K-Means** for similarity grouping.  
    - Use **DBSCAN** to detect **outbreak hotspots**.  
    - Compare results with computed risk scores.
 
-4. **Machine Learning Classification**  
+5. **Machine Learning Classification**  
    - Train and test **Random Forest** / **Logistic Regression** models.  
    - Evaluate performance using **accuracy**, **precision**, **recall**, and **F1-score**.
+   
+---
 
-5. **Visualization & Reporting**  
-   - Use **heatmaps**, **trend plots**, and **risk maps** to visualize epidemic intensity.  
-   - Provide **data-driven policy insights** for proactive epidemic management.
+## Results & Analysis
+
+### 🔹 Exploratory Data Analysis (EDA)
+- Disease-wise analysis  
+- Monthly trends  
+- Correlation between climate and disease  
+- High-risk district identification  
+
+### 🔹 Disease-wise Analysis
+![Disease](disease_analysis.png)
+
+### 🔹 Monthly Trend
+![Monthly](monthly_trend.png)
+
+### 🔹 Correlation Heatmap
+![Correlation](correlation_matrix.png)
+
+### 🔹 High Risk Districts
+![Top Districts](top_districts.png)
+
+### 🔹 Water vs Vector Analysis
+![Water vs Vector](water_vector_analysis.png)
+
+### 🔹 Clustering & Machine Learning 
+- K-Means clustering for grouping districts  
+- DBSCAN for hotspot detection  
+- Random Forest & Logistic Regression for classification  
+- Heatmaps and cluster visualizations generated  
+
+ These models help identify epidemic zones and validate risk predictions.
+
+
 
 ---
 
-## 🧠 Expected Outcomes
+##  Expected Outcomes
 
 - Identification of **high-risk epidemic zones** across India.  
 - Predictive models for **epidemic severity forecasting**.  
@@ -69,7 +108,7 @@ By leveraging the **EpiClim dataset**, which provides district-wise weekly epide
 
 ---
 
-## 🧰 Tools & Technologies
+##  Tools & Technologies
 
 | Category | Tools / Libraries |
 |-----------|-------------------|
@@ -81,7 +120,7 @@ By leveraging the **EpiClim dataset**, which provides district-wise weekly epide
 
 ---
 
-## 📊 Sample Visuals
+##  Sample Visuals
 - **Heatmaps** — Epidemic intensity across regions.  
 - **Trend Analysis** — Seasonal and yearly epidemic trends.  
 - **Cluster Maps** — Data-driven grouping of high-risk districts.  
@@ -96,14 +135,14 @@ By leveraging the **EpiClim dataset**, which provides district-wise weekly epide
 
 ---
 
-## 👩‍💻 Contributors
+##  Contributors
 - **Project Lead:** *Sunidhi*  
 - **Domain:** Data Science & Epidemiology  
 - **Focus:** Climate-driven epidemic trend analysis  
 
 ---
 
-## 🧩 Future Scope
+##  Future Scope
 
 - Integration with **real-time climate monitoring systems**  
 - Development of an **interactive epidemic risk dashboard**  
@@ -111,6 +150,6 @@ By leveraging the **EpiClim dataset**, which provides district-wise weekly epide
 
 ---
 
-## 📜 License
+##  License
 
 This project is released under the **MIT License** – you’re free to use, modify, and share it with attribution.
