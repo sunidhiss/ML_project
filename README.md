@@ -21,7 +21,7 @@ By leveraging the **EpiClim dataset**, which provides district-wise weekly epide
   Collect, clean, and preprocess district-level epidemic and climate datasets from public sources.
 
 - **Risk Score Computation:**  
-  Create a composite risk index using epidemic incidence, rainfall, temperature, and humidity.
+  Create a composite risk index using cases, temperature, precipitation and LAI.
 
 - **Clustering for Risk Zone Identification:**  
   Apply **K-Means** and **DBSCAN** algorithms to group districts with similar epidemic characteristics.
@@ -52,6 +52,9 @@ By leveraging the **EpiClim dataset**, which provides district-wise weekly epide
 3. **Risk Score Computation**  
    - Develop a weighted formula linking epidemic rates to climatic variables.  
    - Rank and categorize districts as **High**, **Moderate**, or **Low Risk**.
+   - The formula for a weighted risk score using normalized variables is the sum of each variable's normalized value
+   - multiplied by its assigned weight, divided by the sum of all weights. 
+
 
 4. **Clustering for Zone Detection**  
    - Apply **K-Means** for similarity grouping.  
