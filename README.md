@@ -1,158 +1,136 @@
-[README.md](https://github.com/user-attachments/files/23306117/README.md)
-# Analyzing the Impact of Climate on Epidemic Trends in India
+# Disease Outbreak Prediction & Risk Clustering
 
-### Identifying High-Risk Epidemic Zones Using Data-Driven Risk Scoring and Clustering
-
----
-
-## Introduction
-
-Epidemic outbreaks in India—especially **vector-borne and waterborne diseases** like dengue, malaria, and chikungunya—show strong correlations with **climatic factors** such as temperature, humidity, and rainfall.  
-
-This project develops a **data-driven, non-GIS approach** to identify **high-risk epidemic zones** across Indian districts using **risk score computation**, **clustering algorithms**, and **machine learning validation**.
-
-By leveraging the **EpiClim dataset**, which provides district-wise weekly epidemic and climate data, the model detects spatial-temporal patterns and classifies each district into high, moderate, or low epidemic risk zones. These insights can help **public health authorities** allocate resources efficiently and predict outbreaks early.
+A machine learning pipeline for predicting disease outbreaks across Indian districts using classification models and K-Means clustering. Includes an early warning system that flags high-risk districts based on the latest available data.
 
 ---
 
-##  Objectives
+## Overview
 
-- **Data Acquisition & Preprocessing:**  
-  Collect, clean, and preprocess district-level epidemic and climate datasets from public sources.
+This project takes district-level disease surveillance data and does three things:
 
-- **Risk Score Computation:**  
-  Create a composite risk index using cases, temperature, precipitation and LAI.
-
-- **Clustering for Risk Zone Identification:**  
-  Apply **K-Means** and **DBSCAN** algorithms to group districts with similar epidemic characteristics.
-
-- **Machine Learning Validation:**  
-  Use **Random Forest** and **Logistic Regression** to classify risk levels and validate clustering accuracy.
-
-- **Visualization & Insights:**  
-  Generate **heatmaps**, **time-series trends**, and **risk comparison charts** to support public health planning.
+1. **Classifies** whether a given record represents an outbreak (cases > 10)
+2. **Clusters** districts into risk profiles based on climate, geography, and case patterns
+3. **Flags** high-risk districts using outbreak probability scores
 
 ---
 
-##  Workflow
+## Data
 
-1. **Data Collection & Preprocessing**  
-   - Download datasets from **EpiClim**, **IMD**, and **IDSP**.  
-   - Handle missing values and normalize climatic variables.  
-   - Perform **Exploratory Data Analysis (EDA)** for trend identification.
+The pipeline expects an Excel file named `Final_data (1).xlsx` with the following columns:
 
-2. **Exploratory Data Analysis (EDA) & Insights (Added Work)**  
-   - Performed detailed analysis using cleaned dataset  
-   - Observed seasonal outbreak patterns (monsoon peaks)  
-   - Identified dominant diseases (Dengue, Malaria, Chikungunya)  
-   - Analyzed correlation between temperature, rainfall, and cases  
-   - Highlighted high-risk districts based on average cases  
-   - Generated visual outputs saved as `.png` for reporting and presentation
-
-3. **Risk Score Computation**  
-   - Develop a weighted formula linking epidemic rates to climatic variables.  
-   - Rank and categorize districts as **High**, **Moderate**, or **Low Risk**.
-   - The formula for a weighted risk score using normalized variables is the sum of each variable's normalized value
-   - multiplied by its assigned weight, divided by the sum of all weights. 
-
-
-4. **Clustering for Zone Detection**  
-   - Apply **K-Means** for similarity grouping.  
-   - Use **DBSCAN** to detect **outbreak hotspots**.  
-   - Compare results with computed risk scores.
-
-5. **Machine Learning Classification**  
-   - Train and test **Random Forest** / **Logistic Regression** models.  
-   - Evaluate performance using **accuracy**, **precision**, **recall**, and **F1-score**.
-   
----
-
-## Results & Analysis
-
-### 🔹 Exploratory Data Analysis (EDA)
-- Disease-wise analysis  
-- Monthly trends  
-- Correlation between climate and disease  
-- High-risk district identification  
-
-### 🔹 Disease-wise Analysis
-![Disease](disease_analysis.png)
-
-### 🔹 Monthly Trend
-![Monthly](monthly_trend.png)
-
-### 🔹 Correlation Heatmap
-![Correlation](correlation_matrix.png)
-
-### 🔹 High Risk Districts
-![Top Districts](top_districts.png)
-
-### 🔹 Water vs Vector Analysis
-![Water vs Vector](water_vector_analysis.png)
-
-### 🔹 Clustering & Machine Learning 
-- K-Means clustering for grouping districts  
-- DBSCAN for hotspot detection  
-- Random Forest & Logistic Regression for classification  
-- Heatmaps and cluster visualizations generated  
-
- These models help identify epidemic zones and validate risk predictions.
-
-
+| Column | Description |
+|---|---|
+| `district` | District name |
+| `state_ut` | State or union territory |
+| `year`, `mon`, `day` | Date fields |
+| `Cases` | Reported case count |
+| `Deaths` | Reported death count |
+| `Temp` | Temperature |
+| `preci` | Precipitation |
+| `LAI` | Leaf Area Index (vegetation proxy) |
+| `Latitude`, `Longitude` | Geographic coordinates |
+| `Disease` | Disease name/type |
 
 ---
 
-##  Expected Outcomes
+## Feature Engineering
 
-- Identification of **high-risk epidemic zones** across India.  
-- Predictive models for **epidemic severity forecasting**.  
-- **Visual analytics dashboards** highlighting regional epidemic patterns.  
-- Actionable insights for **public health resource allocation**.
+The following features are derived from the raw data:
 
----
-
-##  Tools & Technologies
-
-| Category | Tools / Libraries |
-|-----------|-------------------|
-| **Programming Language** | Python |
-| **Libraries** | Pandas, NumPy, Scikit-learn, Matplotlib, Seaborn |
-| **Development Environment** | Jupyter Notebook / Google Colab |
-| **Optional Visualization** | Power BI / Tableau |
-| **Datasets** | EpiClim Dataset (arXiv), IMD Open Data, IDSP Portal |
+- `Cases_lag1`, `Cases_lag2` — prior case counts per district (shift by 1 and 2 records)
+- `Cases_rolling_mean` — 3-record rolling average per district
+- `Death_Rate` — deaths / (cases + 1)
+- `Temp_Preci` — temperature × precipitation interaction term
+- `Disease_enc` — label-encoded disease type
 
 ---
 
-##  Sample Visuals
-- **Heatmaps** — Epidemic intensity across regions.  
-- **Trend Analysis** — Seasonal and yearly epidemic trends.  
-- **Cluster Maps** — Data-driven grouping of high-risk districts.  
+## Models
+
+Four classifiers are evaluated using 10-fold stratified cross-validation:
+
+| Model | Notes |
+|---|---|
+| Logistic Regression | Scaled with StandardScaler, class-weight balanced |
+| Random Forest | 200 estimators, max depth 10, balanced |
+| Gradient Boosting | 200 estimators, learning rate 0.05, max depth 5 |
+| HistGradientBoosting (XGBoost equivalent) | Built-in sklearn, balanced class weight |
+
+Metrics reported: Accuracy, Precision, Recall, F1-Score, ROC-AUC (mean ± std across folds).
 
 ---
 
-## 📁 Dataset References
+## Outputs
 
-- **EpiClim Dataset** – District-wise weekly epidemic and climate data  
-- **IMD Open Data** – Rainfall, humidity, and temperature datasets  
-- **IDSP Portal** – Government epidemic surveillance data  
+### Classification
+- Model comparison bar chart (10-fold CV metrics)
+- Aggregated confusion matrices for all four models
+- Per-fold confusion matrix breakdown for XGBoost
+- Feature importance chart (Random Forest, top 3 highlighted)
+
+### Clustering (K-Means)
+- Silhouette score and inertia plots for K = 2–10
+- Silhouette plot for the best K
+- Cluster profiles (mean values per cluster)
+- Outbreak rate and record count per cluster
+- Geographic scatter plot of clusters (lat/long)
+
+### Visualisations
+- Monthly cases heatmap by district
+- Time-series of total cases per month
+- Early warning table: districts with outbreak probability > 70%
 
 ---
 
-##  Contributors
-- **Project Lead:** *Sunidhi*  
-- **Domain:** Data Science & Epidemiology  
-- **Focus:** Climate-driven epidemic trend analysis  
+## Requirements
+
+```
+pandas
+numpy
+scikit-learn
+matplotlib
+seaborn
+openpyxl
+```
+
+Install with:
+
+```bash
+pip install pandas numpy scikit-learn matplotlib seaborn openpyxl
+```
 
 ---
 
-##  Future Scope
+## Usage
 
-- Integration with **real-time climate monitoring systems**  
-- Development of an **interactive epidemic risk dashboard**  
-- Incorporation of **deep learning models** for temporal prediction  
+```bash
+python outbreak_prediction.py
+```
+
+Make sure `Final_data (1).xlsx` is in the same working directory.
 
 ---
 
-##  License
+## Early Warning Output
 
-This project is released under the **MIT License** – you’re free to use, modify, and share it with attribution.
+The script prints a table of high-risk districts at the end of the run:
+
+```
+=======================================================
+  HIGH RISK DISTRICTS (Outbreak Probability > 70%)
+=======================================================
+  District                     State                Prob
+  -------------------------------------------------------
+  ...
+```
+
+This is generated by fitting the XGBoost model on the full dataset and scoring the most recent record per district.
+
+---
+
+## Notes
+
+- The outbreak threshold is set at 10 cases. This can be adjusted by changing the `threshold` variable in section 3.
+- Class imbalance is handled via `class_weight='balanced'` in all models.
+- Missing values in the feature matrix are imputed with column means.
+- K-Means clustering uses only climate, geographic, and case-trend features — the outbreak label is excluded to avoid leakage.
