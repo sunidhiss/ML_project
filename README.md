@@ -2,6 +2,8 @@
 
 A machine learning pipeline for predicting disease outbreaks across Indian districts using classification models and K-Means clustering. Includes an early warning system that flags high-risk districts based on the latest available data.
 
+Click here to download our paper:
+[Download Research Paper](https://github.com/sunidhiss/ML_project/blob/main/2501.18602v1.pdf)
 ---
 
 ## Overview
